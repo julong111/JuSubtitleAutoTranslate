@@ -43,8 +43,12 @@ SRT字幕文件AI自动翻译脚本
 ### 🛠️ 初始化并安装依赖
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
+退出venv命令 deactivate
 
 ### 模型位置与下载方式
 
