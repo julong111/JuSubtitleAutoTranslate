@@ -176,16 +176,16 @@ def main():
         epilog="""
 使用示例:
   # 使用OPUS-MT模型（速度快）   默认模型
-  python translate.py input.srt
+  python translate.py -i input.srt
   
   # 使用NLLB模型（质量高）
-  python translate.py input.srt -m nllb
+  python translate.py -i input.srt -m nllb
   
   # 指定模型路径
-  python translate.py input.srt -m opus --modelpath /path/to/model
+  python translate.py -i input.srt -m opus --modelpath /path/to/model
   
   # 自动下载模型   同时指定下载位置（非必填）
-  python translate.py input.srt -m nllb --auto-download --modelpath /path/to/model
+  python translate.py -i input.srt -m nllb --auto-download --modelpath /path/to/model
         """
     )
     
