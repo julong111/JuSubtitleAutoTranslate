@@ -1,0 +1,2 @@
+# JuSubtitleAutoTranslate
+SRT字幕文件AI自动翻译脚本
