@@ -3,6 +3,4 @@
 transformers==4.40.2
 torch==2.2.2
 numpy==1.26.4
-# 标准库依赖（无需安装）
-# - argparse, sys, time, pathlib, re, typing (Python标准库)
-# - 其他依赖包（numpy, tqdm, sentencepiece, sacremoses）项目中没有使用，已移除
+sentencepiece==0.2.0
