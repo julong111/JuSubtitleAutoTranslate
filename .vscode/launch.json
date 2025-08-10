@@ -1,0 +1,171 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "OPUS - 默认",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "OPUS - 错误模型路径",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "opus",
+                "--modelpath",
+                "models/opus-mt-en-zh-errorpath"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "OPUS - 正确模型路径",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "opus",
+                "--modelpath",
+                "/Users/julong/AI-Models/opus-mt-en-zh"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "OPUS - 自动下载模型",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "opus",
+                "--auto-download"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "OPUS - 自动下载指定位置",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "opus",
+                "--auto-download",
+                "--modelpath",
+                "/Users/julong/Projects/JuSubtitleAutoTranslate/testmodel"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NLLB - 默认",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "nllb"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NLLB - 错误模型路径",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "nllb",
+                "--modelpath",
+                "models/opus-mt-en-zh-errorpath"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NLLB - 正确模型路径",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "nllb",
+                "--modelpath",
+                "/Users/julong/AI-Models/nllb-200-distilled-600M"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NLLB - 正确模型路径，中转英",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-zh-CN.srt",
+                "-m",
+                "nllb",
+                "--modelpath",
+                "/Users/julong/AI-Models/nllb-200-distilled-600M",
+                "--source_lang",
+                "zho_Hans",
+                "--target_lang",
+                "eng_Latn"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NLLB - 自动下载模型",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "nllb",
+                "--auto-download"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NLLB - 自动下载指定位置",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/translate.py",
+            "args": [
+                "-i",
+                "./sample-eng.srt",
+                "-m",
+                "nllb",
+                "--auto-download",
+                "--modelpath",
+                "/Users/julong/Projects/JuSubtitleAutoTranslate/aaa"
+            ],
+            "console": "integratedTerminal"
+        },
+    ]
+}
