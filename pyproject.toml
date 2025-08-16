@@ -1,0 +1,12 @@
+[project]
+name = "jusubtitleautotranslate"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12.10"
+dependencies = [
+    "transformers==4.40.2",
+    "torch==2.2.2",
+    "sentencepiece==0.2.0",
+    "sacremoses>=0.1.1",
+]

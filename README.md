@@ -42,11 +42,12 @@ SRT字幕文件AI自动翻译脚本
 
 ### 🛠️ 初始化并安装依赖
 
+项目使用uv管理，请先安装好uv工具。
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-
-pip install -r requirements.txt
+uv init
+uv run translate.py -i sample-eng.srt -m opus --modelpath /user/path 
+或
+python3 translate.py -i sample-eng.srt -m opus --modelpath /user/path
 ```
 退出venv命令 deactivate
 
@@ -54,17 +55,17 @@ pip install -r requirements.txt
 
 1. **手工指定模型路径**  
    ```bash
-   python3 translate.py input.srt -m opus --modelpath /user/path 
+   python3 translate.py -i sample-eng.srt -m opus --modelpath /user/path 
    ```
 2. **手工下载并建立软链接**  
    国内自动下载模型网速不好的情况下，先手动下载翻译模型到本地，然后手动建立软链接：
    ```bash
    ln -s /user/opus-mt-en-zh ./models/opus-mt-en-zh
-   python3 translate.py input.srt -m opus
+   python3 translate.py -i sample-eng.srt -m opus
    ```
 3. **全自动下载模型**（适合网速快）  
    ```bash
-   python3 translate.py input.srt
+   python3 translate.py -i sample-eng.srt
    ```
 
 

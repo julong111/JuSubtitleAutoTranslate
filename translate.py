@@ -8,6 +8,7 @@
 import argparse
 import sys
 import time
+import logging
 from pathlib import Path
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from srt_utils import (
@@ -37,36 +38,35 @@ def load_model(model_type: str, model_path: str = None, auto_download: bool = Fa
         if auto_download or not model_path:
             # 下载到指定目录或默认缓存
             cache_dir = model_path if model_path else None
-            print(f"🔄 正在自动下载模型 {model_name} 到 {cache_dir or '默认缓存目录'}")
+            logging.info(f"🔄 正在自动下载模型 {model_name} 到 {cache_dir or '默认缓存目录'}")
             tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_dir)
             model = AutoModelForSeq2SeqLM.from_pretrained(model_name, cache_dir=cache_dir)
         else:
             # 加载本地模型
-            print(f"🔒 正在加载本地模型 {model_path}")
+            logging.info(f"🔒 正在加载本地模型 {model_path}")
             tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
             model = AutoModelForSeq2SeqLM.from_pretrained(model_path, local_files_only=True)
-        print(f"✅ {model_type} 模型加载成功")
+        logging.info(f"✅ {model_type} 模型加载成功")
         return tokenizer, model
     except Exception as e:
         if auto_download:
-            print(f"❌ 模型自动下载失败: {e}")
-            print("💡 解决方案：")
-            print("1. 检查网络连接并重试")
-            print(f"2. 手工下载并指定正确的模型路径")
+            logging.info(f"❌ 模型自动下载失败: {e}")
+            logging.info("💡 解决方案：")
+            logging.info("1. 检查网络连接并重试")
+            logging.info("2. 手工下载并指定正确的模型路径")
         else:
-            print(f"❌ 本地模型加载失败")
-            print("💡 解决方案：")
-            print("1. 使用 --auto-download 参数自动下载模型")
-            print(f"2. 确保模型路径正确 {model_path}")
-            print("3. 手动下载模型到指定目录")
+            logging.info("❌ 本地模型加载失败")
+            logging.info("💡 解决方案：")
+            logging.info("1. 使用 --auto-download 参数自动下载模型")
+            logging.info(f"2. 确保模型路径正确 {model_path}")
+            logging.info("3. 手动下载模型到指定目录")
         raise
 
 class TranslationModel:
     """翻译模型基类"""
 
-    def __init__(self, name: str, description: str):
+    def __init__(self, name: str):
         self.name = name
-        self.description = description
      
     def translate_text(self, text: str, tokenizer, model, **kwargs) -> str:
         """翻译文本"""
@@ -76,10 +76,7 @@ class OPUSMTModel(TranslationModel):
     """OPUS-MT模型实现"""
     
     def __init__(self):
-        super().__init__(
-            name="OPUS-MT",
-            description="速度快，质量一般，适合实时翻译"
-        ) 
+        super().__init__(name="OPUS-MT") 
 
     def translate_text(self, text: str, tokenizer, model, max_length: int = 512) -> str:
         """使用OPUS-MT模型翻译文本"""
@@ -95,17 +92,14 @@ class OPUSMTModel(TranslationModel):
             
             return result
         except Exception as e:
-            print(f"翻译文本时出错: {e}")
+            logging.info(f"翻译文本时出错: {e}")
             return text
 
 class NLLBModel(TranslationModel):
     """NLLB模型实现"""
     
     def __init__(self):
-        super().__init__(
-            name="NLLB-200-distilled-600M",
-            description="质量高，速度慢，适合高质量翻译"
-        )
+        super().__init__(name="NLLB-200-distilled-600M")
     
     def translate_text(self, text: str, tokenizer, model, source_lang: str = "eng_Latn", 
                       target_lang: str = "zho_Hans", max_length: int = 512) -> str:
@@ -126,7 +120,7 @@ class NLLBModel(TranslationModel):
             
             return result
         except Exception as e:
-            print(f"翻译文本时出错: {e}")
+            logging.info(f"翻译文本时出错: {e}")
             return text
 
 def get_model_class(model_type: str) -> TranslationModel:
@@ -146,14 +140,13 @@ def get_model_class(model_type: str) -> TranslationModel:
 def translate_subtitles(subtitles: list, model_instance: TranslationModel, 
                        tokenizer, model, **kwargs) -> tuple:
     """翻译字幕列表"""
-    print(f"\n🌐 正在使用{model_instance.name}模型翻译字幕...")
-    print(f"💡 {model_instance.description}")
+    logging.info(f"🌐 正在使用{model_instance.name}模型翻译字幕...")
     
     translated_count = 0
     start_time = time.time()
     
     for i, subtitle in enumerate(subtitles):
-        print(f"翻译进度: {i+1}/{len(subtitles)}", end='\r')
+        logging.info(f"翻译进度: {i+1}/{len(subtitles)}")
         
         # 翻译文本
         translated_text = model_instance.translate_text(subtitle['text'], tokenizer, model, **kwargs)
@@ -163,9 +156,9 @@ def translate_subtitles(subtitles: list, model_instance: TranslationModel,
     end_time = time.time()
     elapsed_time = end_time - start_time
     
-    print(f"\n✅ 翻译完成，共翻译 {translated_count} 条字幕")
-    print(f"⏱️  总耗时: {elapsed_time:.2f} 秒")
-    print(f"🚀 平均速度: {len(subtitles)/elapsed_time:.2f} 条/秒")
+    logging.info(f"\n✅ 翻译完成，共翻译 {translated_count} 条字幕")
+    logging.info(f"⏱️  总耗时: {elapsed_time:.2f} 秒")
+    logging.info(f"🚀 平均速度: {len(subtitles)/elapsed_time:.2f} 条/秒")
     
     return translated_count, elapsed_time
 
@@ -205,19 +198,19 @@ def main():
                        help='最大输入长度（默认：512）')
     
     args = parser.parse_args()
-    print("DEBUG: args =", args)  # <-- 添加这一行
+    logging.debug(f"DEBUG: args = {args}")
     
     # 检查输入文件
     input_path = Path(args.input_file)
     if not validate_srt_file(input_path):
-        print(f"❌ 错误：输入文件无效或不是SRT格式: {input_path}")
+        logging.info(f"❌ 错误：输入文件无效或不是SRT格式: {input_path}")
         sys.exit(1)
     
     # 获取模型实例
     try:
         model_instance = get_model_class(args.model)
     except ValueError as e:
-        print(f"❌ 错误：{e}")
+        logging.info(f"❌ 错误：{e}")
         sys.exit(1)
     nomodelpath = False
     # 设置默认模型路径
@@ -235,31 +228,29 @@ def main():
         suffix = f"_{args.model}_translated.zh-CN"
         output_path = get_output_filename(input_path, suffix)
     
-    print(f"🎯 JuSubTitleAutoTranslate - 字幕翻译工具")
-    print(f"📁 输入文件: {input_path}")
-    print(f"📁 输出文件: {output_path}")
-    print(f"🤖 模型: {model_instance.name}")
-    print(f"📝 描述: {model_instance.description}")
-    print(f"📂 模型路径: {args.modelpath}")
-    print(f"⬇️  自动下载: {'是' if args.auto_download else '否'}")
+    logging.info("🎯 JuSubTitleAutoTranslate - 字幕翻译工具")
+    logging.info(f"📁 输入文件: {input_path}")
+    logging.info(f"📁 输出文件: {output_path}")
+    logging.info(f"🤖 模型: {model_instance.name}")
+    logging.info(f"📂 模型路径: {args.modelpath}")
+    logging.info(f"⬇️  自动下载: {'是' if args.auto_download else '否'}")
     argmodelpath = Path(args.modelpath)
     if args.auto_download:
         if nomodelpath:
             argmodelpath = './models/'
-        print(f"📁 下载目录: {argmodelpath}")
+        logging.info(f"📁 下载目录: {argmodelpath}")
     
     if args.model == 'nllb':
-        print(f"🌐 源语言: {args.source_lang}")
-        print(f"🌐 目标语言: {args.target_lang}")
+        logging.info(f"🌐 源语言: {args.source_lang}")
+        logging.info(f"🌐 目标语言: {args.target_lang}")
     
     try:
         # 加载模型
         tokenizer, model = load_model(args.model, argmodelpath, args.auto_download)
-        # tokenizer, model = model_instance.load_model(argmodelpath, args.auto_download)
         
-        print("\n📖 正在解析SRT文件...")
+        logging.info("📖 正在解析SRT文件...")
         subtitles = parse_srt_file(input_path)
-        print(f"✅ 解析完成，共找到 {len(subtitles)} 条字幕")
+        logging.info(f"✅ 解析完成，共找到 {len(subtitles)} 条字幕")
         
         # 翻译字幕
         if args.model == 'opus':
@@ -275,19 +266,25 @@ def main():
                 max_length=args.max_length
             )
         
-        print("\n💾 正在保存翻译后的文件...")
+        logging.info("💾 正在保存翻译后的文件...")
         write_srt_file(subtitles, output_path)
-        print(f"✅ 文件保存成功: {output_path}")
+        logging.info(f"✅ 文件保存成功: {output_path}")
         
-        print(f"\n🎉 翻译完成！输出文件: {output_path}")
-        print(f"📊 统计信息:")
-        print(f"   - 总字幕行数: {len(subtitles)}")
-        print(f"   - 翻译成功行数: {translated_count}")
-        print(f"   - 总耗时: {elapsed_time:.2f} 秒")
-        print(f"   - 平均速度: {len(subtitles)/elapsed_time:.2f} 条/秒")
+        logging.info(f"🎉 翻译完成！输出文件: {output_path}")
+        logging.info("📊 统计信息:")
+        logging.info(f"   - 总字幕行数: {len(subtitles)}")
+        logging.info(f"   - 翻译成功行数: {translated_count}")
+        logging.info(f"   - 总耗时: {elapsed_time:.2f} 秒")
+        logging.info(f"   - 平均速度: {len(subtitles)/elapsed_time:.2f} 条/秒")
     except Exception as e:
-        print(f"❌ 发生错误: {e}")
+        logging.info(f"❌ 发生错误: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    logging.info("Starting JuSubTitleAutoTranslate...")
     main()

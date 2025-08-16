@@ -1,6 +1,0 @@
-# Python dependencies for JuSubtitleAutoTranslate project
-# 核心依赖包（实际使用）
-transformers==4.40.2
-torch==2.2.2
-numpy==1.26.4
-sentencepiece==0.2.0
