@@ -1,6 +1,6 @@
 # JuSubtitleAutoTranslate
 
-SRT字幕文件AI自动翻译脚本
+文件AI自动翻译脚本
 
 
 一个支持多种AI翻译模型的SRT字幕文件自动翻译工具，支持OPUS-MT（速度快）和NLLB（质量高）两种模型。
@@ -17,7 +17,7 @@ SRT字幕文件AI自动翻译脚本
 ## 📁 实际使用场景
 - 快速翻译英文字幕
 - 批量处理多个字幕文件(待开发)
-- 翻译其他文本格式（待开发）
+- 翻译其他文本格式srt,txt,md
 
 ---
 
@@ -87,7 +87,10 @@ python translate.py [选项]
 
 ```bash
 # 基本用法
-python translate.py -i input.srt --modelpath /user/opus-modelpath
+python translate.py -i input.srt --model_path /user/opus-modelpath
+
+# 批处理
+python translate.py -di /inputdir -do /outputdir --model_path /user/opus-modelpath
 
 # 使用OPUS-MT模型（速度快，质量一般）
 python translate.py -i input.srt -m opus
@@ -102,10 +105,10 @@ python translate.py -i input.srt -o output.srt
 python translate.py -i input.srt -m nllb --auto-download
  
 # 自动下载模型至指定路径
-python translate.py -i input.srt -m nllb --auto-download --modelpath /user/opus-modelpath
+python translate.py -i input.srt -m nllb --auto-download --model_path /user/opus-modelpath
 
 # 自定义输出和参数
-python translate.py -i input.srt -o translated.srt -m nllb --modelpath /user/opus-modelpath --source_lang eng_Latn --target_lang zho_Hans --max-length 1024
+python translate.py -i input.srt -o translated.srt -m nllb --model_path /user/opus-modelpath --source_lang eng_Latn --target_lang zho_Hans --max_length 1024
 
 # 查看帮助
 python translate.py --help

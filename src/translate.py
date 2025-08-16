@@ -26,7 +26,7 @@ from srt_utils import (
     clean_text,
     get_output_file,
     parse_srt_file,
-    validate_srt_file,
+    validate_file_format,
     write_srt_file,
 )
 
@@ -45,7 +45,7 @@ def process_single_file(input_path, output_path, args, tokenizer, model):
     处理单个SRT文件的完整流程：解析、翻译、保存。
     """
     try:
-        logging.info("📖 正在解析SRT文件...")
+        logging.info("📖 正在解析文件...")
         subtitles = parse_srt_file(input_path)
         logging.info(f"✅ 解析完成，共找到 {len(subtitles)} 条字幕")
         elapsed_time = 1
@@ -64,22 +64,11 @@ def process_single_file(input_path, output_path, args, tokenizer, model):
             translated_count = 0
             start_time = time.time()
 
-            # translation_func = TRANSLATION_FUNCTIONS.get(args.model)
-
             for i, subtitle in enumerate(subtitles):
                 logging.info(f"翻译进度: {i + 1}/{len(subtitles)}")
 
                 # 根据模型类型选择性地传递参数
                 if args.model == "nllb":
-                    # translated_text = tokenizer(
-                    #     subtitle["text"],
-                    #     tokenizer,
-                    #     model,
-                    #     source_lang=args.source_lang,
-                    #     target_lang=args.target_lang,
-                    #     max_length=args.max_length,
-                    # )
-
                     # NLLB模型需要指定源语言和目标语言
                     input_text = f"{args.source_lang} {subtitle['text']}"
 
@@ -90,7 +79,6 @@ def process_single_file(input_path, output_path, args, tokenizer, model):
                         truncation=True,
                         max_length=args.max_length,
                     )
-                    # outputs = model.generate(**inputs, forced_bos_token_id=tokenizer.lang_code_to_id[target_lang])
                     outputs = model.generate(
                         **inputs,
                         forced_bos_token_id=tokenizer.convert_tokens_to_ids(
@@ -101,9 +89,6 @@ def process_single_file(input_path, output_path, args, tokenizer, model):
                         outputs[0], skip_special_tokens=True
                     )
                 else:  # 'opus'
-                    # translated_text = tokenizer(
-                    #     subtitle["text"], tokenizer, model, max_length=args.max_length
-                    # )
                     inputs = tokenizer(
                         subtitle["text"],
                         return_tensors="pt",
@@ -422,8 +407,8 @@ def main():
     if args.input_file:
         # 单文件模式
         input_path = Path(args.input_file)
-        if not validate_srt_file(input_path):
-            logging.error(f"❌ 错误：输入文件无效或不是SRT格式: {input_path}")
+        if not validate_file_format(input_path):
+            logging.error(f"❌ 错误：输入文件格式暂不支持: {input_path}")
             sys.exit(1)
 
         output_path = get_output_file(input_path, args.output)

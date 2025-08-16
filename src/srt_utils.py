@@ -79,7 +79,7 @@ def clean_text(text: str) -> str:
     return clean_text
 
 
-def validate_srt_file(file_path: Path) -> bool:
+def validate_file_format(file_path: Path) -> bool:
     """验证SRT文件格式是否正确
 
     Args:
@@ -88,13 +88,12 @@ def validate_srt_file(file_path: Path) -> bool:
     Returns:
         文件格式是否有效
     """
-    # file_path = Path(file_path)
-    # print(f"[DEBUG] 检查文件路径: {file_path.resolve()}")
 
     if not file_path.exists():
         return False
 
-    if not file_path.suffix.lower() == ".srt":
+    supported_extensions = {".srt", ".txt", ".md"}
+    if file_path.suffix.lower() not in supported_extensions:
         return False
 
     try:
