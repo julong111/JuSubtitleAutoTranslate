@@ -1,14 +1,7 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-# 告诉 setuptools 源码在 'src' 目录中
-package-dir = {"" = "src"}
-
 [project]
-name = "jusubtitleautotranslate"
-version = "0.1.0"
+name = "JuSubtitleAutoTranslate"
+version = "1.0.0"
+date = "2025/10"
 description = "一个关于自动翻译字幕的项目"
 readme = "README.md"
 requires-python = ">=3.12.10"
@@ -16,7 +9,12 @@ dependencies = [
     "transformers==4.40.2",
     "torch==2.2.2",
     "sentencepiece==0.2.0",
-    "sacremoses>=0.1.1",
+    "tkhtmlview>=0.3.1",
+    "numpy<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
     "pytest>=8.4.1",
-    "pytest-cov>=6.2.1",
+#    "sacremoses>=0.1.1",
 ]

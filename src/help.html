@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>模型手动下载帮助</title>
+</head>
+<body style="font-family: sans-serif; line-height: 1.6; padding: 15px; background-color: #fdfdfd;">
+    <h1 style="color: #2c3e50;">模型手动下载与放置指南</h1>
+    <p>如果自动下载失败或速度过慢，您可以选择手动下载模型文件，并将其放置在正确的目录结构中。</p>
+
+    <h2 style="color: #2c3e50;">基本步骤</h2>
+    <ol>
+        <li>从 Hugging Face 官网下载模型的所有文件。</li>
+        <li>在项目根目录下创建一个名为 <code style="background-color: #eeeeee; padding: 2px 5px;">models</code> 的文件夹。</li>
+        <li>按照下文指定的结构，将下载的文件存放到 <code style="background-color: #eeeeee; padding: 2px 5px;">models</code> 文件夹内。</li>
+    </ol>
+
+    <div style="background-color: #fff9e6; padding: 10px; margin: 15px 0;">
+        <strong>注意：</strong> 目录结构和文件名必须完全匹配，否则程序将无法识别。
+    </div>
+
+    <hr>
+
+    <h2 style="color: #2c3e50;">1. OPUS-MT (opus-mt-en-zh)</h2>
+    <p>此模型用于快速翻译。</p>
+    <ul>
+        <li><strong>下载地址:</strong> <a href="https://huggingface.co/Helsinki-NLP/opus-mt-en-zh/tree/main">https://huggingface.co/Helsinki-NLP/opus-mt-en-zh/tree/main</a></li>
+        <li>
+            <strong>存放路径结构:</strong>
+            <pre><code style="background-color: #eeeeee; color: #34495e; display: block; padding: 10px;">
+/JuSubtitleAutoTranslate (项目根目录)
+└── /models
+    └── /models--Helsinki-NLP--opus-mt-en-zh
+        └── /snapshots
+            └── /408d9bc410a388e1d9aef112a2daba955b945255
+                ├── config.json
+                ├── generation_config.json
+                ├── source.spm
+                ├── target.spm
+                ├── tokenizer_config.json
+                └── vocab.json
+                └── pytorch_model.bin
+            </code></pre>
+        </li>
+    </ul>
+
+    <h2 style="color: #2c3e50;">2. NLLB (nllb-200-distilled-600M)</h2>
+    <p>此模型提供更高质量的翻译。</p>
+    <ul>
+        <li><strong>下载地址:</strong> <a href="https://huggingface.co/facebook/nllb-200-distilled-600M/tree/main">https://huggingface.co/facebook/nllb-200-distilled-600M/tree/main</a></li>
+        <li>
+            <strong>存放路径结构:</strong>
+            <pre><code style="background-color: #eeeeee; color: #34495e; display: block; padding: 10px;">
+/JuSubtitleAutoTranslate (项目根目录)
+└── /models
+    └── /models--facebook--nllb-200-distilled-600M
+        └── /snapshots
+            └── /f8d333a098d19b4fd9a8b18f94170487ad3f821d
+                ├── config.json
+                ├── generation_config.json
+                ├── ... (其他模型文件)
+                ├── tokenizer.json
+                ├── tokenizer_config.json
+                └── special_tokens_map.json
+                └── pytorch_model.bin
+            </code></pre>
+        </li>
+    </ul>
+
+    <div style="background-color: #e8f5e9; padding: 10px; margin: 15px 0;">
+        <strong>提示：</strong> 完成手动放置后，请重启本工具，新的模型状态将会被自动检测并显示。
+    </div>
+
+</body>
+</html>
