@@ -1,9 +1,13 @@
+[中文](#) | [English](README-en.md)
+
+**[小白手把手安装使用教程-点这里](stepbystep.md)**
+
 # JuSubtitleAutoTranslate
 
 文件AI自动翻译脚本
 
-
-一个支持多种AI翻译模型的SRT字幕文件自动翻译工具，支持OPUS-MT（速度快）和NLLB（质量高）两种模型。
+一个支持多种AI翻译模型的SRT字幕文件自动翻译工具。
+支持 **Helsinki-NLP/opus-mt-en-zh** 和**facebook/nllb** 两种机器翻译模型。
 
 ## 📋 功能特性
 
@@ -16,7 +20,7 @@
 
 ## 📁 实际使用场景
 - 快速翻译英文字幕
-- 批量处理多个字幕文件(待开发)
+- 批量处理多个字幕文件
 - 翻译其他文本格式srt,txt,md
 
 ---
@@ -45,9 +49,9 @@
 项目使用uv管理，请先安装好uv工具。
 ```bash
 uv init
-uv run translate.py -i sample-eng.srt -m opus --modelpath /user/path 
+uv run translate.py -i sample-eng.srt -m opus --model_path /user/path 
 或
-python3 translate.py -i sample-eng.srt -m opus --modelpath /user/path
+python3 translate.py -i sample-eng.srt -m opus --model_path /user/path
 ```
 退出venv命令 deactivate
 
@@ -55,7 +59,7 @@ python3 translate.py -i sample-eng.srt -m opus --modelpath /user/path
 
 1. **手工指定模型路径**  
    ```bash
-   python3 translate.py -i sample-eng.srt -m opus --modelpath /user/path 
+   python3 translate.py -i sample-eng.srt -m opus --model_path /user/path 
    ```
 2. **手工下载并建立软链接**  
    国内自动下载模型网速不好的情况下，先手动下载翻译模型到本地，然后手动建立软链接：
@@ -75,18 +79,20 @@ python3 translate.py -i sample-eng.srt -m opus --modelpath /user/path
 python translate.py [选项]
 
 选项:
-  -i, --input             输入字幕文件路径
-  -o, --output            输出字幕文件路径
-  -m                      选择翻译模型  opus,nllb [默认: opus]
-  --modelpath            模型路径（可选/可自动下载）
-  --auto-download         自动下载模型标志,默认False
-  --source-lang           源语言代码（仅NLLB有效）
-  --target-lang           目标语言代码（仅NLLB有效）
-  --max-length            最大输入长度 [默认: 512]
+  -i, --input_file        输入字幕文件路径 (单文件模式)
+  -di, --input_dir        输入的SRT文件夹路径 (批处理模式)
+  -o, --output            输出文件路径（可选，仅单文件模式有效）
+  -do, --output_dir       输出文件夹路径（可选，仅批处理模式有效）
+  -m, --model             选择翻译模型: opus(速度快) 或 nllb(质量高) [默认: opus]
+  --model_path            模型路径（可选，不填则使用默认路径）
+  --auto-download         如果本地模型不存在，自动从Hugging Face下载（默认：否）
+  --source_lang           源语言代码（仅NLLB模型有效，默认：eng_Latn 英文）
+  --target_lang           目标语言代码（仅NLLB模型有效，默认：zho_Hans 简体中文）
+  --max_length            最大输入长度 [默认: 512]
 ```
 
 ```bash
-# 基本用法
+# 基本用法 (单文件)
 python translate.py -i input.srt --model_path /user/opus-modelpath
 
 # 批处理
@@ -360,11 +366,9 @@ python translate.py -i input.srt --auto-download
 - 检查输入文本格式
 
 ## 📝 更新日志
-
 - **v1.0**: 新增翻译脚本 `translate.py`
 
 ## 🤝 贡献
-
 欢迎提交Issue和Pull Request来改进这个工具！
 
 ## 联系我
